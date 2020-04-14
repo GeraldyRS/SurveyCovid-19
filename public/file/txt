@@ -1,0 +1,32 @@
+penawaran notif:GP(apr)&PV&PRO& RND
+
+MOU notif : legal & RnD & PRO
+
+approval project : PV notif semua
+
+trial notif PRO & PV
+
+food savety : QA
+notif food savety : PRO & RnD & PV
+
+kontrak notif : semua
+
+alasan approve/not
+
+history lead time
+table project :
+Detail project {
+revisi{
+detail lead time
+tabular
+}}
+status hold dari prodev
+
+status project :
+0=default
+1=approved
+2=not approved
+3=drop
+8=done
+
+

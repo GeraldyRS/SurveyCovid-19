@@ -1,0 +1,106 @@
+#include <LiquidCrystal_I2C.h>
+
+char cache;
+String inputString="";
+const int read = A0; //Sensor AO pin to Arduino pin A0
+int value;
+
+LiquidCrystal_I2C lcd(0x27,2,1,0,4,5,6,7);
+
+void setup()                    // run once, when the sketch starts
+{
+ Serial.begin(9600);            // set the baud rate to 9600, same should be of your Serial Monitor
+ lcd.begin (16,2);
+ lcd.setBacklightPin(3, POSITIVE);
+ lcd.setBacklight(HIGH);
+ pinMode(13, OUTPUT);
+}
+
+void loop()
+{
+  if(Serial.available()){
+    while(Serial.available()){
+      char inChar = (char)Serial.read();
+      inputString += inChar;
+    }
+    Serial.println(inputString);
+    while (Serial.available()>0){
+      cache = Serial.read();
+    }
+    if(inputString == "1"){
+      digitalWrite(13, HIGH);
+    }else if(inputString == "2"){
+      digitalWrite(13,LOW);
+    }
+    inputString = "";
+  }
+
+  value = analogRead(read); //Read data from analog pin and store it to value variable
+  
+  if (value<=480){ 
+    Serial.println("Water level: 0mm - Empty!"); 
+    lcd.setCursor(0,0);
+    lcd.print("Water level: ");
+    lcd.setCursor(0,1);
+    lcd.print("0mm - Empty!"); 
+  }
+  else if (value>480 && value<=530){ 
+    Serial.println("Water level: 0mm to 5mm"); 
+    lcd.setCursor(0,0);
+    lcd.print("Water level:"); 
+    lcd.setCursor(0,1);
+    lcd.print("0mm to 5mm"); 
+  }
+  else if (value>530 && value<=615){ 
+    Serial.println("Water level: 5mm to 10mm");
+    lcd.setCursor(0,0); 
+    lcd.print("Water level: ");
+    lcd.setCursor(0,1);
+    lcd.print("5mm to 10mm");  
+  }
+  else if (value>615 && value<=660){ 
+    Serial.println("Water level: 10mm to 15mm");
+    lcd.setCursor(0,0); 
+    lcd.print("Water level: ");
+    lcd.setCursor(0,1);
+    lcd.print("10mm to 15mm");  
+  } 
+  else if (value>660 && value<=680){ 
+    Serial.println("Water level: 15mm to 20mm");
+    lcd.setCursor(0,0); 
+    lcd.print("Water level: ");
+    lcd.setCursor(0,1);
+    lcd.print("15mm to 20mm");  
+  }
+  else if (value>680 && value<=690){ 
+    Serial.println("Water level: 20mm to 25mm");
+    lcd.setCursor(0,0); 
+    lcd.print("Water level: ");
+    lcd.setCursor(0,1);
+    lcd.print("20mm to 25mm");  
+  }
+  else if (value>690 && value<=700){ 
+    Serial.println("Water level: 25mm to 30mm");
+    lcd.setCursor(0,0); 
+    lcd.print("Water level:"); 
+    lcd.setCursor(0,1);
+    lcd.print("25mm to 30mm"); 
+  }
+  else if (value>700 && value<=705){ 
+    Serial.println("Water level: 30mm to 35mm"); 
+    lcd.setCursor(0,0);
+    lcd.print("Water level:"); 
+    lcd.setCursor(0,1);
+    lcd.print("30mm to 35mm"); 
+  }
+  else if (value>705){ 
+    Serial.println("Water level: 35mm to 40mm");
+    lcd.setCursor(0,0); 
+    lcd.print("Water level: ");
+    lcd.setCursor(0,1);
+    lcd.print("35mm to 40mm");  
+  }
+  
+  delay(1000);
+  lcd.clear();
+}
